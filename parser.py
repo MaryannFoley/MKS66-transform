@@ -41,6 +41,40 @@ def parse_file( fname, points, transform, screen, color ):
         if file[line] == "line":
             line+=1
             params=file[line]
-
+            params.split()
+        if file[line]=="ident":
+            ident(transform)
+        if file[line]=="scale":
+            line+=1
+            params=file[line]
+            params.split()
+            make_scale(params[0],params[1],params[2])
+        if file[line]=="translate":
+            line+=1
+            params=file[line]
+            params.split()
+            make_translate(params[0],params[1],params[2])
+        if file[line]=="rotate":
+            line+=1
+            params=file[line]
+            params.split()
+            if params[0] == "x":
+                make_rotX(params[1])
+            if params[0] == "y":
+                make_rotX(params[1])
+            if params[0] == "z":
+                make_rotX(params[1])
+        if file[line]=="apply":
+            matrix_mult(transform,points)
+        if file[line]=="display":
+            clear_screen(screen)
+            draw_lines(points,screen,color)
+            display(screen)
+        if file[line]=="save":
+            clear_screen(screen)
+            draw_lines(points,screen,color)
+            save_extension(screen,file[line+1])
+        if file[line]=="quit":
+            break
 
     pass
