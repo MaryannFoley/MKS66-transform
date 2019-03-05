@@ -35,42 +35,49 @@ See the file script for an example of the file format
 def parse_file( fname, points, transform, screen, color ):
     with open(fname,"r") as f:
         file=f.read()
-    file.split("\n")
-
+    file=file.split("\n")
+    print(file)
     for line in range(len(file)):
         if file[line] == "line":
             line+=1
             params=file[line]
-            params.split()
+            params=params.split()
+            print(params)
+            add_edge(points,int(params[0]),int(params[1]),int(params[2]),int(params[3]),int(params[4]),int(params[5]))
+            print(points)
         if file[line]=="ident":
             ident(transform)
         if file[line]=="scale":
             line+=1
             params=file[line]
-            params.split()
-            make_scale(params[0],params[1],params[2])
+            params=params.split()
+            transform=matrix_mult(make_scale(int(params[0]),int(params[1]),int(params[2])),transform)
         if file[line]=="translate":
             line+=1
             params=file[line]
-            params.split()
-            make_translate(params[0],params[1],params[2])
+            params=params.split()
+            transform=matrix_mult(make_translate(int(params[0]),int(params[1]),int(params[2])),transform)
+            print(transform)
         if file[line]=="rotate":
             line+=1
             params=file[line]
-            params.split()
+            params=params.split()
+            print(params)
             if params[0] == "x":
-                make_rotX(params[1])
+                transform=matrix_mult(make_rotX(int(params[1])),transform)
             if params[0] == "y":
-                make_rotX(params[1])
+                transform=matrix_mult(make_rotY(int(params[1])),transform)
             if params[0] == "z":
-                make_rotX(params[1])
+                transform=matrix_mult(make_rotZ(int(params[1])),transform)
         if file[line]=="apply":
             matrix_mult(transform,points)
+            print(points)
         if file[line]=="display":
             clear_screen(screen)
             draw_lines(points,screen,color)
             display(screen)
         if file[line]=="save":
+            print("saving")
             clear_screen(screen)
             draw_lines(points,screen,color)
             save_extension(screen,file[line+1])
